@@ -20,7 +20,7 @@ encodings = 'encodings2.pickle'
 
 #************************************************************
 
-
+#
 
 data = pickle.loads(open(encodings, "rb").read())
 
