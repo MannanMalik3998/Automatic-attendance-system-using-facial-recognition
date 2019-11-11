@@ -45,6 +45,8 @@ while True:
 
 	# draw in the image
 	cv2.rectangle(frame, upper_left, bottom_right, (86, 252, 200 ), 2)
+	cv2.putText(frame,"Press q to close", (300, 450),cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 1)
+
 
 	#********************************************
 
@@ -91,7 +93,7 @@ while True:
 
 		if(left > a and left < c and top > b and top < d and right < c and bottom < d):
 			
-			print("\a")
+			#print("\a")
 			cv2.rectangle(frame, upper_left, bottom_right, (200, 252, 200 ), 2)
 			if(not presentStudents.__contains__(name)and ( not name.__contains__('Unknown')) ):
 				presentStudents.append(name)
