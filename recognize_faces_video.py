@@ -92,6 +92,7 @@ while True:
 		if(left > a and left < c and top > b and top < d and right < c and bottom < d):
 			
 			print("\a")
+			cv2.rectangle(frame, upper_left, bottom_right, (200, 252, 200 ), 2)
 			if(not presentStudents.__contains__(name)and ( not name.__contains__('Unknown')) ):
 				presentStudents.append(name)
 			if not name.__contains__('Unknown'):
