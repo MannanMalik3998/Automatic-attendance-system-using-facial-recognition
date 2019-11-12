@@ -93,7 +93,7 @@ while True:
 
 		if(left > a and left < c and top > b and top < d and right < c and bottom < d):
 			
-			#print("\a")
+			# print("\a")
 			cv2.rectangle(frame, upper_left, bottom_right, (200, 252, 200 ), 2)
 			if(not presentStudents.__contains__(name)and ( not name.__contains__('Unknown')) ):
 				presentStudents.append(name)
@@ -102,7 +102,7 @@ while True:
 
 			#*********************************************************************************************************
 
-	cv2.imshow("Frame", frame)
+	cv2.imshow("Facial Recognition", frame)
 	key = cv2.waitKey(1) & 0xFF
 
 	# if the `q` key was pressed, break from the loop
