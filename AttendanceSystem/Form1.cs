@@ -32,7 +32,7 @@ namespace AttendanceSystem
             this.Hide();
             string output = p.StandardOutput.ReadToEnd();
             p.WaitForExit();
-            MessageBox.Show(output, "Attendance");
+            MessageBox.Show(output, "Automatic Attendance System -> Attendance");
             // Console.WriteLine(output);
             //          Console.ReadKey();
             this.Show();
@@ -46,9 +46,9 @@ namespace AttendanceSystem
                 "facerecognition\n4).NET\n\n\nDescription: It is an automated attendance system" +
                 " that marks the attendance of the students by facial recognition. It automates the manual " +
                 "task of taking attendance saving much time.\n\nInstructions to follow:\nPress the Take Attendance button" +
-                "to start the attendance app. The app works on a single student at a time. The students must be instructed to keep their faces in the center" +
+                " to start the attendance app. The app works on a single student at a time. The students must be instructed to keep their faces in the center" +
                 "of the rectangle shown on the live feed. Once the student is prompted to be as present, their attendance" +
-                "is marked and they can move away from the camera", "About");
+                "is marked and they can move away from the camera", "Automatic Attendance System -> About");
             this.Show();
         }
     }

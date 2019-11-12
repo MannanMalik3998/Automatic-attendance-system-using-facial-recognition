@@ -102,7 +102,7 @@ while True:
 
 			#*********************************************************************************************************
 
-	cv2.imshow("Facial Recognition", frame)
+	cv2.imshow("Automatic Attendance System -> Facial Recognition", frame)
 	key = cv2.waitKey(1) & 0xFF
 
 	# if the `q` key was pressed, break from the loop
