@@ -16,8 +16,8 @@ namespace AttendanceSystem
         {
             InitializeComponent();
         }
-
-        private void Button1_Click(object sender, EventArgs e)
+ 
+    private void Button1_Click(object sender, EventArgs e)
         {
             
             //string fileName = @"E:\Sem7\HCI\lol.py";            
@@ -32,7 +32,33 @@ namespace AttendanceSystem
             this.Hide();
             string output = p.StandardOutput.ReadToEnd();
             p.WaitForExit();
-            MessageBox.Show(output, "Facial Recognition -> Attendance");
+            
+            string []a = output.Split('\n');
+
+            string totalStudents = a[0];
+            string totPresent = a[1];
+
+            string[] students = { "Manan", "Murtaza", "Yasir", "Imtiaz" };
+
+
+            //int totalStudents = int.Parse(a[0]);
+            //int totPresent = int.Parse(a[1]);
+            List<string> presStudents = new List<string>();
+
+            for (int i= 2; i < a.Length - 1; i++) {
+                presStudents.Add(a[i]);
+
+            }
+
+            /*
+            foreach (string i in a) {
+                if(string.Compare(i, " ")!=0)
+                MessageBox.Show(i, "Facial Recognition -> Attendance");
+                //Console.WriteLine(i);
+            }
+            */
+            //MessageBox.Show(output, "Facial Recognition -> Attendance");
+            MessageBox.Show("Total Students: "+totalStudents+"\nTotal Students Present: "+totPresent+"", "Facial Recognition -> Attendance");
             // Console.WriteLine(output);
             //          Console.ReadKey();
             this.Show();
@@ -50,6 +76,29 @@ namespace AttendanceSystem
                 " of the rectangle shown on the live feed. Once the student is prompted to be as present, their attendance" +
                 " is marked and they can move away from the camera", "Automatic Attendance System -> About");
             this.Show();
+        }
+
+        
+       
+        
+
+        private void Form1_KeyDown_1(object sender, KeyEventArgs e)
+        {
+
+
+            if (e.Control == true && e.KeyCode == Keys.W)
+            {
+                Button1.PerformClick();
+            }
+            if (e.Control == true && e.KeyCode == Keys.D)
+            {
+                button2.PerformClick();
+            }
+        }
+
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
+            this.KeyPreview = true;
         }
     }
 }
