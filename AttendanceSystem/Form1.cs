@@ -57,8 +57,14 @@ namespace AttendanceSystem
                 //Console.WriteLine(i);
             }
             */
+
+            string pres="";
+            foreach(string i in presStudents) {
+                pres += i;
+                pres += "\n";
+            }
             //MessageBox.Show(output, "Facial Recognition -> Attendance");
-            MessageBox.Show("Total Students: "+totalStudents+"\nTotal Students Present: "+totPresent+"", "Facial Recognition -> Attendance");
+           MessageBox.Show("Total Students: "+totalStudents+"\nTotal Students Present: "+totPresent+"\nPresent Students:\n"+pres, "Facial Recognition -> Attendance");
             // Console.WriteLine(output);
             //          Console.ReadKey();
             this.Show();
