@@ -16,8 +16,8 @@ namespace AttendanceSystem
         {
             InitializeComponent();
         }
- 
-    private void Button1_Click(object sender, EventArgs e)
+        ToolTip t1 = new ToolTip();
+        private void Button1_Click(object sender, EventArgs e)
         {
             
             //string fileName = @"E:\Sem7\HCI\lol.py";            
@@ -106,11 +106,25 @@ namespace AttendanceSystem
             {
                 button2.PerformClick();
             }
+            if (e.Control == true && e.KeyCode == Keys.Q)
+            {
+                System.Windows.Forms.Application.Exit();
+            }
         }
 
         private void Form1_Load_1(object sender, EventArgs e)
         {
             this.KeyPreview = true;
+        }
+
+        private void Button1_MouseHover(object sender, EventArgs e)
+        {
+            t1.Show("Press this button to take attendance\nPlease wait for few seconds after pressing the button\nMake sure the camera is attached", Button1);
+        }
+
+        private void Button2_MouseHover(object sender, EventArgs e)
+        {
+            t1.Show("Press this button to read details about Automatic Attendance System", button2);
         }
     }
 }

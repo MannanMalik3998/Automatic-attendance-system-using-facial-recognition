@@ -28,6 +28,9 @@ try:
 
 	while True:
 		frame = vs.read()
+
+		
+		
 		
 		rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 		rgb = imutils.resize(frame, width=750)
