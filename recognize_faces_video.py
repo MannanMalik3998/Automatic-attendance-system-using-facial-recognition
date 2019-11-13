@@ -15,7 +15,7 @@ import cv2
 upper_left = (200, 200)
 bottom_right = (400, 400)
 presentStudents = list()
-camSource = 0 # 0 for laptop cam and 1 for external cam
+camSource = 1 # 0 for laptop cam and 1 for external cam
 #encodings = 'encodings2.pickle'
 encodings = 'E:\Sem7\HCI\ProjAttendanceSystem\HCI\encodings2.pickle'#change this path according to the file path
 #************************************************************
