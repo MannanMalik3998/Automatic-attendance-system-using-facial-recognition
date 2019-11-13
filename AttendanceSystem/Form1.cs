@@ -31,8 +31,14 @@ namespace AttendanceSystem
             p.Start();
             this.Hide();
             string output = p.StandardOutput.ReadToEnd();
-            p.WaitForExit();
+
             
+            p.WaitForExit();
+            if (output.Contains("-1"))
+            {
+                MessageBox.Show("An error occurred during execution\nKindly check whether the camera is working properly and then start the application again","Error");
+                System.Windows.Forms.Application.Exit();
+            }
             string []a = output.Split('\n');
 
             string totalStudents = a[0];

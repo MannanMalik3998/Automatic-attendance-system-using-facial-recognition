@@ -15,118 +15,120 @@ import cv2
 upper_left = (200, 200)
 bottom_right = (400, 400)
 presentStudents = list()
-camSource = 0 # 0 for laptop cam and 1 for external cam
+camSource = 1 # 0 for laptop cam and 1 for external cam
 #encodings = 'encodings2.pickle'
 encodings = 'E:\Sem7\HCI\ProjAttendanceSystem\HCI\encodings2.pickle'#change this path according to the file path
 #************************************************************
+try:
+	data = pickle.loads(open(encodings, "rb").read())
 
-data = pickle.loads(open(encodings, "rb").read())
+	vs = VideoStream(src=camSource).start()
 
-vs = VideoStream(src=camSource).start()
+	time.sleep(2.0)
 
-time.sleep(2.0)
-
-while True:
-	frame = vs.read()
-	
-	rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-	rgb = imutils.resize(frame, width=750)
-	r = frame.shape[1] / float(rgb.shape[1])
-
-	boxes = face_recognition.face_locations(rgb,model='hog')
-	encodings = face_recognition.face_encodings(rgb, boxes)
-	names = []
-
-	#******************** Edits ************************
-	height, width, channels = frame.shape
-	upper_left = (int(width / 4)+10, int(height / 4)+10)
-	bottom_right = (int(width * 3 / 4)+10, int(height * 3 / 4)+10)
-
-
-	# draw in the image
-	cv2.rectangle(frame, upper_left, bottom_right, (86, 252, 200 ), 2)
-	cv2.putText(frame,"Press q to close", (300, 450),cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 1)
-
-
-	#********************************************
-
-	# loop over the facial embeddings
-	for encoding in encodings:
-
-		matches = face_recognition.compare_faces(data["encodings"],encoding)
+	while True:
+		frame = vs.read()
 		
-		name = "Unknown"
+		rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+		rgb = imutils.resize(frame, width=750)
+		r = frame.shape[1] / float(rgb.shape[1])
 
-		# check to see if we have found a match
-		if True in matches:
-			matchedIdxs = [i for (i, b) in enumerate(matches) if b]
-			counts = {}
+		boxes = face_recognition.face_locations(rgb,model='hog')
+		encodings = face_recognition.face_encodings(rgb, boxes)
+		names = []
 
-			for i in matchedIdxs:
-				name = data["names"][i]
-				counts[name] = counts.get(name, 0) + 1
+		#******************** Edits ************************
+		height, width, channels = frame.shape
+		upper_left = (int(width / 4)+10, int(height / 4)+10)
+		bottom_right = (int(width * 3 / 4)+10, int(height * 3 / 4)+10)
 
-			name = max(counts, key=counts.get)
-		
-		# update the list of names
-		names.append(name)
 
-	# loop over the recognized faces
-	for ((top, right, bottom, left), name) in zip(boxes, names):
-		# rescale the face coordinates
-		top = int(top * r)
-		right = int(right * r)
-		bottom = int(bottom * r)
-		left = int(left * r)
+		# draw in the image
+		cv2.rectangle(frame, upper_left, bottom_right, (86, 252, 200 ), 2)
+		cv2.putText(frame,"Press q to close", (300, 450),cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 1)
 
-		# draw the predicted face name on the image
-		cv2.rectangle(frame, (left, top), (right, bottom),	(0, 255, 0), 2)
-		
-		y = top - 15 if top - 15 > 15 else top + 15
 
-		cv2.putText(frame, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX,	0.75, (0, 255, 0), 2)
+		#********************************************
 
-		#**************************************** Edits *****************************************************************
+		# loop over the facial embeddings
+		for encoding in encodings:
 
-		a,b = upper_left
-		c,d = bottom_right
-
-		if(left > a and left < c and top > b and top < d and right < c and bottom < d):
+			matches = face_recognition.compare_faces(data["encodings"],encoding)
 			
-			# print("\a")
-			cv2.rectangle(frame, upper_left, bottom_right, (200, 252, 200 ), 2)
-			if(not presentStudents.__contains__(name)and ( not name.__contains__('Unknown')) ):
-				presentStudents.append(name)
-			if not name.__contains__('Unknown'):
-				cv2.putText(frame, name+"Present", (30, 20),cv2.FONT_HERSHEY_SIMPLEX, 1, (195, 100, 255), 1)
+			name = "Unknown"
 
-			#*********************************************************************************************************
+			# check to see if we have found a match
+			if True in matches:
+				matchedIdxs = [i for (i, b) in enumerate(matches) if b]
+				counts = {}
 
-	cv2.imshow("Automatic Attendance System -> Facial Recognition", frame)
-	key = cv2.waitKey(1) & 0xFF
+				for i in matchedIdxs:
+					name = data["names"][i]
+					counts[name] = counts.get(name, 0) + 1
 
-	# if the `q` key was pressed, break from the loop
-	if key == ord("q"):
-		break
+				name = max(counts, key=counts.get)
+			
+			# update the list of names
+			names.append(name)
 
-# do a bit of cleanup
-cv2.destroyAllWindows()
-vs.stop()
+		# loop over the recognized faces
+		for ((top, right, bottom, left), name) in zip(boxes, names):
+			# rescale the face coordinates
+			top = int(top * r)
+			right = int(right * r)
+			bottom = int(bottom * r)
+			left = int(left * r)
 
-#**************************************** Edits *****************************************************************
+			# draw the predicted face name on the image
+			cv2.rectangle(frame, (left, top), (right, bottom),	(0, 255, 0), 2)
+			
+			y = top - 15 if top - 15 > 15 else top + 15
 
-import os
-#print('Total Students:	',(len(next(os.walk('dataset'))[1]))-1)
-# print('Total Students:	',4)
-print(4)
+			cv2.putText(frame, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX,	0.75, (0, 255, 0), 2)
 
-print(presentStudents.__len__())
-# print("Total Students Present:",presentStudents.__len__())
+			#**************************************** Edits *****************************************************************
 
-for i in presentStudents:
-	print(i)
+			a,b = upper_left
+			c,d = bottom_right
+
+			if(left > a and left < c and top > b and top < d and right < c and bottom < d):
+				
+				# print("\a")
+				cv2.rectangle(frame, upper_left, bottom_right, (200, 252, 200 ), 2)
+				if(not presentStudents.__contains__(name)and ( not name.__contains__('Unknown')) ):
+					presentStudents.append(name)
+				if not name.__contains__('Unknown'):
+					cv2.putText(frame, name+"Present", (30, 20),cv2.FONT_HERSHEY_SIMPLEX, 1, (195, 100, 255), 1)
+
+				#*********************************************************************************************************
+
+		cv2.imshow("Automatic Attendance System -> Facial Recognition", frame)
+		key = cv2.waitKey(1) & 0xFF
+
+		# if the `q` key was pressed, break from the loop
+		if key == ord("q"):
+			break
+
+	# do a bit of cleanup
+	cv2.destroyAllWindows()
+	vs.stop()
+
+	#**************************************** Edits *****************************************************************
+
+	import os
+	#print('Total Students:	',(len(next(os.walk('dataset'))[1]))-1)
+	# print('Total Students:	',4)
+	print(4)
+
+	print(presentStudents.__len__())
+	# print("Total Students Present:",presentStudents.__len__())
+
+	for i in presentStudents:
+		print(i)
 
 
 
 
-#**************************************** Edits *****************************************************************
+	#**************************************** Edits *****************************************************************
+except:
+	print(-1)
