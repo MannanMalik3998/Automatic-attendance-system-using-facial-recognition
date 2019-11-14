@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
+using Microsoft.VisualBasic;
 namespace AttendanceSystem
 {
     public partial class Form1 : Form
@@ -19,14 +19,34 @@ namespace AttendanceSystem
         ToolTip t1 = new ToolTip();
         private void Button1_Click(object sender, EventArgs e)
         {
+
             
+            string input = Interaction.InputBox("Add CourseName\n1)HCI\n2)IPT\n3)PIT\n4)IS", "Automatic Attendance System -> Course Name", "HCI", -1, -1);
+
+            if (input == "") {
+                //MessageBox.Show("", "Automatic Attendance System -> Error");
+                //System.Windows.Forms.Application.Exit();
+                input = Interaction.InputBox("Add CourseName\n1)HCI\n2)IPT\n3)PIT\n4)IS", "Must specify course name", "HCI", -1, -1);
+            }
+            string cam = Interaction.InputBox("Enter 0 to use webcam\nEnter 1 to use external webcam", "Automatic Attendance System -> Specify Camera", "0", -1, -1);
+
+            if (cam == "")
+            {
+                //System.Windows.Forms.Application.Exit();
+
+                cam = Interaction.InputBox("Enter 0 to use webcam\nEnter 1 to use external webcam", "Must specify camera", "0", -1, -1);
+            }
+
+            int camSource = int.Parse(cam);
             //string fileName = @"E:\Sem7\HCI\lol.py";            
             string fileName = @"E:\Sem7\HCI\ProjAttendanceSystem\HCI\recognize_faces_video.py";        
             Process p = new Process();
-            p.StartInfo = new ProcessStartInfo(@"C:\Python37\python.exe", fileName){
+            p.StartInfo = new ProcessStartInfo(@"C:\Python37\python.exe", fileName) {
+                Arguments = string.Format("{0} {1} {2}", fileName, input,camSource),
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
-                CreateNoWindow = false
+                CreateNoWindow = false,
+                
             };
             p.Start();
             this.Hide();
@@ -36,13 +56,14 @@ namespace AttendanceSystem
             p.WaitForExit();
             if (output.Contains("-1"))
             {
-                MessageBox.Show("An error occurred during execution\nKindly check whether the camera is working properly and then start the application again","Error");
+                MessageBox.Show("An error occurred during execution\nKindly check whether the camera is working properly and then start the application again", "Automatic Attendance System -> Error");
                 System.Windows.Forms.Application.Exit();
             }
             string []a = output.Split('\n');
 
-            string totalStudents = a[0];
-            string totPresent = a[1];
+            string courseName = a[0];
+            string totalStudents = a[1];
+            string totPresent = a[2];
 
             string[] students = { "Manan", "Murtaza", "Yasir", "Imtiaz" };
 
@@ -51,7 +72,7 @@ namespace AttendanceSystem
             //int totPresent = int.Parse(a[1]);
             List<string> presStudents = new List<string>();
 
-            for (int i= 2; i < a.Length - 1; i++) {
+            for (int i= 3; i < a.Length - 1; i++) {
                 presStudents.Add(a[i]);
 
             }
@@ -70,7 +91,7 @@ namespace AttendanceSystem
                 pres += "\n";
             }
             //MessageBox.Show(output, "Facial Recognition -> Attendance");
-           MessageBox.Show("Total Students: "+totalStudents+"\nTotal Students Present: "+totPresent+"\nPresent Students:\n"+pres, "Facial Recognition -> Attendance");
+           MessageBox.Show("CourseName:\t\t"+courseName+ "\nTotal Students:\t\t" + totalStudents+ "\nTotal Students Present:\t" + totPresent+"\nPresent Students:\n"+pres, "Automatic Attendance System -> Facial Recognition -> Attendance");
             // Console.WriteLine(output);
             //          Console.ReadKey();
             this.Show();

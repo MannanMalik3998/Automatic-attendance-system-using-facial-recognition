@@ -7,15 +7,17 @@ import imutils
 import pickle
 import time
 import cv2
-
+import sys
 
 #************************* Edits ***************************
 
+courseName=sys.argv[1]
+print(courseName)
 
 upper_left = (200, 200)
 bottom_right = (400, 400)
 presentStudents = list()
-camSource = 1 # 0 for laptop cam and 1 for external cam
+camSource = int(sys.argv[2]) # 0 for laptop cam and 1 for external cam
 #encodings = 'encodings2.pickle'
 encodings = 'E:\Sem7\HCI\ProjAttendanceSystem\HCI\encodings2.pickle'#change this path according to the file path
 #************************************************************
@@ -129,7 +131,7 @@ try:
 	for i in presentStudents:
 		print(i)
 
-
+	
 
 
 	#**************************************** Edits *****************************************************************
