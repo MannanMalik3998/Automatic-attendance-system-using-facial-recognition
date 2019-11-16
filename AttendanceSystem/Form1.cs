@@ -23,18 +23,20 @@ namespace AttendanceSystem
             
             string input = Interaction.InputBox("Add CourseName\n1)HCI\n2)IPT\n3)PIT\n4)IS", "Automatic Attendance System -> Course Name", "HCI", -1, -1);
 
-            if (input == "") {
-                //MessageBox.Show("", "Automatic Attendance System -> Error");
-                //System.Windows.Forms.Application.Exit();
-                input = Interaction.InputBox("Add CourseName\n1)HCI\n2)IPT\n3)PIT\n4)IS", "Must specify course name", "HCI", -1, -1);
+            if (input == "") {//cancel pressed
+                              //MessageBox.Show("", "Automatic Attendance System -> Error");
+                              //System.Windows.Forms.Application.Exit();
+                return;    
+            //input = Interaction.InputBox("Add CourseName\n1)HCI\n2)IPT\n3)PIT\n4)IS", "Must specify course name", "HCI", -1, -1);
             }
             string cam = Interaction.InputBox("Enter 0 to use webcam\nEnter 1 to use external webcam", "Automatic Attendance System -> Specify Camera", "0", -1, -1);
 
             if (cam == "")
             {
+                return;
                 //System.Windows.Forms.Application.Exit();
 
-                cam = Interaction.InputBox("Enter 0 to use webcam\nEnter 1 to use external webcam", "Must specify camera", "0", -1, -1);
+                //cam = Interaction.InputBox("Enter 0 to use webcam\nEnter 1 to use external webcam", "Must specify camera", "0", -1, -1);
             }
 
             int camSource = int.Parse(cam);
@@ -51,50 +53,66 @@ namespace AttendanceSystem
             p.Start();
             this.Hide();
             string output = p.StandardOutput.ReadToEnd();
-
-            
             p.WaitForExit();
+            int ErrorResult = checkError(output);
+
+            if (ErrorResult == -1)
+            {
+                this.Show();
+            }
+            else
+            {
+                string[] a = output.Split('\n');
+
+                string courseName = a[0];
+                string totalStudents = a[1];
+                string totPresent = a[2];
+
+                string[] students = { "Manan", "Murtaza", "Yasir", "Imtiaz" };
+
+
+                //int totalStudents = int.Parse(a[0]);
+                //int totPresent = int.Parse(a[1]);
+                List<string> presStudents = new List<string>();
+
+                for (int i = 3; i < a.Length - 1; i++)
+                {
+                    presStudents.Add(a[i]);
+
+                }
+
+                /*
+                foreach (string i in a) {
+                    if(string.Compare(i, " ")!=0)
+                    MessageBox.Show(i, "Facial Recognition -> Attendance");
+                    //Console.WriteLine(i);
+                }
+                */
+
+                string pres = "";
+                foreach (string i in presStudents)
+                {
+                    pres += i;
+                    pres += "\n";
+                }
+                //MessageBox.Show(output, "Facial Recognition -> Attendance");
+                MessageBox.Show("CourseName:\t\t" + courseName + "\nTotal Students:\t\t" + totalStudents + "\nTotal Students Present:\t" + totPresent + "\nPresent Students:\n" + pres, "Automatic Attendance System -> Facial Recognition -> Attendance");
+                // Console.WriteLine(output);
+                //          Console.ReadKey();
+                this.Show();
+            }
+        }
+
+        public int checkError(string output)
+        {
             if (output.Contains("-1"))
             {
                 MessageBox.Show("An error occurred during execution\nKindly check whether the camera is working properly and then start the application again", "Automatic Attendance System -> Error");
-                System.Windows.Forms.Application.Exit();
+
+                return -1;
+                //System.Windows.Forms.Application.Exit();
             }
-            string []a = output.Split('\n');
-
-            string courseName = a[0];
-            string totalStudents = a[1];
-            string totPresent = a[2];
-
-            string[] students = { "Manan", "Murtaza", "Yasir", "Imtiaz" };
-
-
-            //int totalStudents = int.Parse(a[0]);
-            //int totPresent = int.Parse(a[1]);
-            List<string> presStudents = new List<string>();
-
-            for (int i= 3; i < a.Length - 1; i++) {
-                presStudents.Add(a[i]);
-
-            }
-
-            /*
-            foreach (string i in a) {
-                if(string.Compare(i, " ")!=0)
-                MessageBox.Show(i, "Facial Recognition -> Attendance");
-                //Console.WriteLine(i);
-            }
-            */
-
-            string pres="";
-            foreach(string i in presStudents) {
-                pres += i;
-                pres += "\n";
-            }
-            //MessageBox.Show(output, "Facial Recognition -> Attendance");
-           MessageBox.Show("CourseName:\t\t"+courseName+ "\nTotal Students:\t\t" + totalStudents+ "\nTotal Students Present:\t" + totPresent+"\nPresent Students:\n"+pres, "Automatic Attendance System -> Facial Recognition -> Attendance");
-            // Console.WriteLine(output);
-            //          Console.ReadKey();
-            this.Show();
+            return 0;
         }
 
         private void Button2_Click(object sender, EventArgs e)
