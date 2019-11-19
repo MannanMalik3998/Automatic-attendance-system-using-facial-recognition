@@ -8,16 +8,23 @@ import pickle
 import time
 import cv2
 import sys
+import csv
+import pandas as pd
+import datetime
+import numpy as np
 
 #************************* Edits ***************************
 
 courseName=sys.argv[1]
+# courseName="PIT"
 print(courseName)
 
 upper_left = (200, 200)
 bottom_right = (400, 400)
 presentStudents = list()
 camSource = int(sys.argv[2]) # 0 for laptop cam and 1 for external cam
+# camSource = 0 # 0 for laptop cam and 1 for external cam
+
 #encodings = 'encodings2.pickle'
 encodings = 'E:\Sem7\HCI\ProjAttendanceSystem\HCI\encodings2.pickle'#change this path according to the file path
 #************************************************************
@@ -96,12 +103,12 @@ try:
 			a,b = upper_left
 			c,d = bottom_right
 
-			if(left > a and left < c and top > b and top < d and right < c and bottom < d):
+			if(left > a and left < c and top > b and top < d and right < c and bottom < d):#face is in rectangle
 				
 				# print("\a")
 				cv2.rectangle(frame, upper_left, bottom_right, (200, 252, 200 ), 2)
 				if(not presentStudents.__contains__(name)and ( not name.__contains__('Unknown')) ):
-					presentStudents.append(name)
+					presentStudents.append(name)#mark present
 				if not name.__contains__('Unknown'):
 					cv2.putText(frame, name+"Present", (30, 20),cv2.FONT_HERSHEY_SIMPLEX, 1, (195, 100, 255), 1)
 
@@ -130,10 +137,48 @@ try:
 
 	for i in presentStudents:
 		print(i)
+	#All present students displayed
 
+	#Creating CSV*********************************************************8
+	
+	
+	StudentNames = ["Manan","Murtaza","Imtiaz","Yasir"]
+	#Adding New Attendance
+	def AddAttendance(Attendance, StudentNames, PresentStudents):   
+		Date = (datetime.date.today()).strftime("%d/%m/%Y")
+		Time = (datetime.datetime.today()).strftime("%I %p")
+		DateTime= Date+" (" + Time + ")"
+		Attendance[DateTime] = ["P" if Student in PresentStudents else "A" for Student  in StudentNames]
+		# print("AddAttendance")
+		
+	#Writing to CSV File
+	def WritetoCSVFile(courseName):
+		path="E:\\Sem7\\HCI\\ProjAttendanceSystem\\HCI\\AttendanceSheets\\"
+		CourseName= path+courseName+".csv"
+		Attendance.to_csv(CourseName,index=False)
+		# print("Write TO CSV")
+		
+	# #Reading From CSV File
+	# def ReadFromCSVFile(filename):
+	# 	Attendance = pd.read_csv(filename+".csv")
+	# 	#print(Attendance)
+
+	#Creating DataFrame With Student Names If Creating File For First Time
+	def MakeNewDataFrame(StudentNames):
+		Attendance = pd.DataFrame(StudentNames, columns = ["Student_Names"], index= [i+1 for i in range(len(StudentNames))])
+		return Attendance
+
+	Attendance= MakeNewDataFrame(StudentNames)
+	AddAttendance(Attendance,StudentNames,presentStudents)
+	WritetoCSVFile(courseName)
+
+
+
+	#*********************************************************************
 	
 
 
 	#**************************************** Edits *****************************************************************
-except:
+except Exception as e:
+	# print(e)
 	print(-1)
