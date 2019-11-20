@@ -24,18 +24,48 @@ namespace AttendanceSystem
         {
 
             
-            string input = Interaction.InputBox("Add CourseName\n1)HCI\n2)IPT\n3)PIT\n4)IS", "Automatic Attendance System -> Course Name", "HCI", -1, -1);
+            string input = Interaction.InputBox("Select CourseName\n1)HCI\n2)IPT\n3)PIT\n4)IS", "Automatic Attendance System -> Course Name", "HCI", -1, -1);
 
             if (input == "") {//cancel pressed i.e user changes his/her mind
                 return;    
             }
+
+            string course = input.ToUpper();
+            temp.courseName = input.ToUpper();
+
             
-            temp.courseName = input;
-            
-            string cam = Interaction.InputBox("Enter 0 to use webcam\nEnter 1 to use external webcam\nEnter 2 to take attendance manually", "Automatic Attendance System -> Specify Camera", "0", -1, -1);
+            while (!(course.Contains("HCI") || course.Contains("IPT") || course.Contains("PIT") || course.Contains("IS")) ){//user enters wrong name
+                input = Interaction.InputBox("Select correct CourseName\n1)HCI\n2)IPT\n3)PIT\n4)IS", "Automatic Attendance System -> Course Name", "HCI", -1, -1);
+
+                if (input == "")
+                {//cancel pressed i.e user changes his/her mind
+                    return;
+                }
+
+                course = input.ToUpper();
+                temp.courseName = course;
+
+
+                //return;
+            }
+
+
+
+            string cam = Interaction.InputBox("Select attendance source:\n0 - webcam\n1 - external webcam\n2 - Manual attendance", "Automatic Attendance System -> Course Name -> Specify Camera", "0", -1, -1);
 
             if (cam == ""){//cancel pressed i.e user changes his/her mind
                 return;
+            }
+
+            while (!(cam.Contains("0")|| cam.Contains("1") || cam.Contains("2") )){//wrong input
+
+                
+
+                cam = Interaction.InputBox("Select correct source:\n0 - webcam\n1 - external webcam\n2 - Manual attendance", "Automatic Attendance System -> Course Name -> Specify Camera", "0", -1, -1);
+                if (cam == "")
+                {//cancel pressed i.e user changes his/her mind
+                    return;
+                }
             }
 
             int camSource = int.Parse(cam);      //input to determine camera source
@@ -53,7 +83,7 @@ namespace AttendanceSystem
 
             Process p = new Process();
             p.StartInfo = new ProcessStartInfo(@"C:\Python37\python.exe", fileName) {
-                Arguments = string.Format("{0} {1} {2}", fileName, input,camSource),//command line arguments
+                Arguments = string.Format("{0} {1} {2}", fileName, course,camSource),//command line arguments
                 RedirectStandardOutput = true,//passing of parameters
                 UseShellExecute = false,
                 CreateNoWindow = false,//for opening facial recognition window, set it to false
@@ -190,5 +220,12 @@ namespace AttendanceSystem
             this.Hide();
             new Attendance().Show();
         }
+        
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.Hide();
+            System.Windows.Forms.Application.Exit();
+        }
+        
     }
 }

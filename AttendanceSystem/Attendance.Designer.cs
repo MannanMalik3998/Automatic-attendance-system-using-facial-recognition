@@ -157,6 +157,7 @@
             this.Name = "Attendance";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Attendance";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Attendance_FormClosing_1);
             this.ResumeLayout(false);
             this.PerformLayout();
 

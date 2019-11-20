@@ -103,7 +103,10 @@ namespace AttendanceSystem
 
         }
 
-        
-        
+
+        private void Attendance_FormClosing_1(object sender, FormClosingEventArgs e)
+        {
+            new Form1().Show();//Show main screen again
+        }
     }
 }
