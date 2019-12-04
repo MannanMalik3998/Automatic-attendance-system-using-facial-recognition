@@ -146,29 +146,36 @@ try:
 	#Adding New Attendance
 	def AddAttendance(Attendance, StudentNames, PresentStudents):   
 		Date = (datetime.date.today()).strftime("%d/%m/%Y")
-		Time = (datetime.datetime.today()).strftime("%I %p")
+		#Time = (datetime.datetime.today()).strftime("%I %p")
+		Time = (datetime.datetime.today()).strftime("%I:%M %p")
 		DateTime= Date+" (" + Time + ")"
 		Attendance[DateTime] = ["P" if Student in PresentStudents else "A" for Student  in StudentNames]
 		# print("AddAttendance")
 		
+	path="E:\\Sem7\\HCI\\ProjAttendanceSystem\\HCI\\AttendanceSheets\\"
 	#Writing to CSV File
 	def WritetoCSVFile(courseName):
-		path="E:\\Sem7\\HCI\\ProjAttendanceSystem\\HCI\\AttendanceSheets\\"
+		#path="E:\\Sem7\\HCI\\ProjAttendanceSystem\\HCI\\AttendanceSheets\\"
 		CourseName= path+courseName+".csv"
 		Attendance.to_csv(CourseName,index=False)
 		# print("Write TO CSV")
 		
-	# #Reading From CSV File
-	# def ReadFromCSVFile(filename):
-	# 	Attendance = pd.read_csv(filename+".csv")
-	# 	#print(Attendance)
+	#Reading From CSV File
+	def ReadFromCSVFile(filename):
+		filename = path+filename+".csv"
+		Attendance = pd.read_csv(filename)
+		return Attendance
+		#print(Attendance)
 
 	#Creating DataFrame With Student Names If Creating File For First Time
 	def MakeNewDataFrame(StudentNames):
 		Attendance = pd.DataFrame(StudentNames, columns = ["Student_Names"], index= [i+1 for i in range(len(StudentNames))])
 		return Attendance
-
-	Attendance= MakeNewDataFrame(StudentNames)
+	
+	if(os.path.isfile(path+courseName+".csv")):
+		Attendance = ReadFromCSVFile(courseName)
+	else:
+		Attendance = MakeNewDataFrame(StudentNames)
 	AddAttendance(Attendance,StudentNames,presentStudents)
 	WritetoCSVFile(courseName)
 

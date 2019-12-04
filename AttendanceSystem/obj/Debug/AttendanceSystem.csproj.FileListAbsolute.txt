@@ -4,7 +4,9 @@ E:\Sem7\HCI\ProjAttendanceSystem\HCI\AttendanceSystem\obj\Debug\AttendanceSystem
 E:\Sem7\HCI\ProjAttendanceSystem\HCI\AttendanceSystem\obj\Debug\AttendanceSystem.Attendance.resources
 E:\Sem7\HCI\ProjAttendanceSystem\HCI\AttendanceSystem\obj\Debug\AttendanceSystem.Form1.resources
 E:\Sem7\HCI\ProjAttendanceSystem\HCI\AttendanceSystem\obj\Debug\AttendanceSystem.Properties.Resources.resources
+E:\Sem7\HCI\ProjAttendanceSystem\HCI\AttendanceSystem\obj\Debug\AttendanceSystem.Select.resources
 E:\Sem7\HCI\ProjAttendanceSystem\HCI\AttendanceSystem\obj\Debug\AttendanceSystem.csproj.GenerateResource.cache
 E:\Sem7\HCI\ProjAttendanceSystem\HCI\AttendanceSystem\obj\Debug\AttendanceSystem.csproj.CoreCompileInputs.cache
 E:\Sem7\HCI\ProjAttendanceSystem\HCI\AttendanceSystem\obj\Debug\AttendanceSystem.exe
 E:\Sem7\HCI\ProjAttendanceSystem\HCI\AttendanceSystem\obj\Debug\AttendanceSystem.pdb
+E:\Sem7\HCI\ProjAttendanceSystem\HCI\AttendanceSystem\obj\Debug\AttendanceSystem.ShowAttendance.resources

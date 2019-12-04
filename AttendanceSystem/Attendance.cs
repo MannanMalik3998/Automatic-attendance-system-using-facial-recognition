@@ -53,7 +53,8 @@ namespace AttendanceSystem
             //MessageBox.Show(lines.Count.ToString(),"Count");
             //add new column to the header row
             string date = DateTime.Now.ToString("dd/MM/yyyy");
-            string time = DateTime.Now.ToString("hh tt");
+            //string time = DateTime.Now.ToString("hh tt");
+            string time = DateTime.Now.ToString("hh:mm tt");
 
             lines[0] += ","+date+" ("+time+")";
             int index = 1;
@@ -74,9 +75,9 @@ namespace AttendanceSystem
             File.WriteAllLines(filePath, lines);
 
             //************************************
-            this.Hide();
-            MessageBox.Show(show,"Attendance");
-            new Form1().Show();//showing main screen again
+            this.Close();
+            MessageBox.Show(show, "Automatic Attendance System -> Select -> Attendance");
+            return;
 
         }
 
@@ -106,7 +107,7 @@ namespace AttendanceSystem
 
         private void Attendance_FormClosing_1(object sender, FormClosingEventArgs e)
         {
-            new Form1().Show();//Show main screen again
+            return;
         }
     }
 }

@@ -1,5 +1,6 @@
-CourseName:		HCI
+CourseName:		IS
 Total Students:		4
-Total Students Present:	1
+Total Students Present:	2
 Present Students:
 Manan
+Murtaza
